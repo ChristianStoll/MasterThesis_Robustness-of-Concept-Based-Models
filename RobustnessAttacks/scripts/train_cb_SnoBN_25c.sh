@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Inception-v3 (baseline) on 25 classes (Code for this experiment adapted from ConceptBottleneck
+python3 ConceptBottleneck/experiments.py cub Standard --seed 1 -ckpt 1 -log_dir StandardNoBNModel25_Seed1/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -num_classes 25 -data_dir data/CUB_200_2011/ -b 64 -weight_decay 0.0004 -lr 0.01 -scheduler_step 20
+python3 ConceptBottleneck/experiments.py cub Standard --seed 2 -ckpt 1 -log_dir StandardNoBNModel25_Seed2/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -num_classes 25 -data_dir data/CUB_200_2011/ -b 64 -weight_decay 0.0004 -lr 0.01 -scheduler_step 20
+python3 ConceptBottleneck/experiments.py cub Standard --seed 3 -ckpt 1 -log_dir StandardNoBNModel25_Seed3/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -num_classes 25 -data_dir data/CUB_200_2011/ -b 64 -weight_decay 0.0004 -lr 0.01 -scheduler_step 20

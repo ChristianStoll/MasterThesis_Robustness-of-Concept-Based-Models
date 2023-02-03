@@ -1,0 +1,12 @@
+.idea/
+.ipynb_checkpoints/
+/data/
+testmodels/
+*.pth
+*/__pychache__/
+*.pyc
+first_results/
+second_results/
+*.zip
+/models/
+/outputs/examples/

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# train concept model lr = 0.001 metric loss
+
+# train concept model on annotated BBs, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 1 -log_dir models/MaskBottleneck/Concept_Labelbb/Seed1/ -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 2 -log_dir models/MaskBottleneck/Concept_Labelbb/Seed2/ -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 3 -log_dir models/MaskBottleneck/Concept_Labelbb/Seed3/ -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss
+
+# ----------------------- concept
+# train concept model on segmented BBs, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 1 -log_dir models/MaskBottleneck/Concept_segbb/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type segbb
+CUDA_VISIBLE_DEVICES=1 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 2 -log_dir models/MaskBottleneck/Concept_segbb/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type segbb
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 3 -log_dir models/MaskBottleneck/Concept_segbb/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type segbb
+
+# train concept model on segmented BBs and apply segmentation mask, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=3 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 1 -log_dir models/MaskBottleneck/Concept_segbb_useseg/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type segbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=3 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 2 -log_dir models/MaskBottleneck/Concept_segbb_useseg/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type segbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 3 -log_dir models/MaskBottleneck/Concept_segbb_useseg/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type segbb -apply_segmentation
+# TODO
+# train concept model on cropped BBs, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 1 -log_dir models/MaskBottleneck/Concept_cropbb/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type cropbb
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 2 -log_dir models/MaskBottleneck/Concept_cropbb/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type cropbb
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 3 -log_dir models/MaskBottleneck/Concept_cropbb/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type cropbb
+
+# train concept model on cropped BBs and apply segmentation mask, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 1 -log_dir models/MaskBottleneck/Concept_cropbb_useseg/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type cropbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 2 -log_dir models/MaskBottleneck/Concept_cropbb_useseg/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type cropbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Concept_XtoC --seed 3 -log_dir models/MaskBottleneck/Concept_cropbb_useseg/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -imbalance -use_attr -n_attributes 112 -b 64 -weight_decay 0.00004 -lr 0.001 -metric loss -crop_type cropbb -apply_segmentation
+
+# ----------------------- independent
+# train independent model lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Independent_CtoY --seed 1 -log_dir models/MaskBottleneck/Independent/Seed1/ -e 1000 -optimizer sgd -pretrained -use_attr -no_img -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Independent_CtoY --seed 2 -log_dir models/MaskBottleneck/Independent/Seed2/ -e 1000 -optimizer sgd -pretrained -use_attr -no_img -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Independent_CtoY --seed 3 -log_dir models/MaskBottleneck/Independent/Seed3/ -e 1000 -optimizer sgd -pretrained -use_attr -no_img -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss
+
+# ----------------------- sequential segcrop
+# train sequential model on segmented BBs, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 1 -log_dir models/MaskBottleneck/Sequential_segbb/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type segbb
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 2 -log_dir models/MaskBottleneck/Sequential_segbb/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type segbb
+CUDA_VISIBLE_DEVICES=3 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 3 -log_dir models/MaskBottleneck/Sequential_segbb/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type segbb
+
+# train sequential model on segmented BBs, after applying segmentation mask, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=2 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 1 -log_dir models/MaskBottleneck/Sequential_segbb_useseg/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type segbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=3 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 2 -log_dir models/MaskBottleneck/Sequential_segbb_useseg/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type segbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=3 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 3 -log_dir models/MaskBottleneck/Sequential_segbb_useseg/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type segbb -apply_segmentation
+
+# ----------------------- sequential cropbb
+# train sequential model on cropped BBs, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 1 -log_dir models/MaskBottleneck/Sequential_cropbb/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type cropbb
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 2 -log_dir models/MaskBottleneck/Sequential_cropbb/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type cropbb
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 3 -log_dir models/MaskBottleneck/Sequential_cropbb/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type cropbb
+
+# train sequential model on cropped BBs, after applying segmentation mask, lr = 0.001 metric loss
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 1 -log_dir models/MaskBottleneck/Sequential_cropbb_useseg/Seed1/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type cropbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=0 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 2 -log_dir models/MaskBottleneck/Sequential_cropbb_useseg/Seed2/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type cropbb -apply_segmentation
+CUDA_VISIBLE_DEVICES=1 python3 RobustnessAttacks/MaskBottleneck_train.py -exp Sequential_CtoY --seed 3 -log_dir models/MaskBottleneck/Sequential_cropbb_useseg/Seed3/ -data_dir data/CUB_200_2011/CUB_processed/masked_attr_data -e 1000 -optimizer sgd -pretrained -n_attributes 112 -b 64 -weight_decay 0.00005 -lr 0.001 -metric loss -crop_type cropbb -apply_segmentation

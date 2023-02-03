@@ -1,0 +1,2 @@
+# Robustness-of-Concept-Based-Models
+Folders for data and models should be at the same level, the folders for RobustnessAttacks and paper are. There might be the requirement to adapt the BASE_PATH in RobustnessAttacks/config.py to the new project

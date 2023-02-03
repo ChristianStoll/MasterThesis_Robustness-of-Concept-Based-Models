@@ -1,0 +1,36 @@
+
+
+# ======================= Source code, datasets and preprocessing =======================
+# Download the source code and datasets from our codalab worksheet ( https://worksheets.codalab.org/worksheets/0x362911581fcd4e048ddfd84f47203fd2 ).
+# You should have `CUB_200_2011`, `CUB_processed`, `places365`, `pretrained`, `src` all availble on the path during experiment runs.
+# Each python script outputs to a folder, change `-log_dir` or `-out_dir` if you would like different output folders.
+
+# Experiments
+
+## ======================= Main experiments =======================
+### Concept Model
+python ConceptBottleneck/experiments.py cub Concept_XtoC --seed 1 -ckpt 1 -log_dir testmodels/ConceptModel_Seed1/outputs/ -e 2 -optimizer sgd -pretrained -use_aux -use_attr -weighted_loss multiple -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -normalize_loss -b 2 -weight_decay 0.00004 -lr 0.01 -scheduler_step 2 -bottleneck
+python3 ConceptBottleneck/experiments.py cub Concept_XtoC --seed 2 -ckpt 1 -log_dir model_templates/ConceptModel_Seed2/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -weighted_loss multiple -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -normalize_loss -b 64 -weight_decay 0.00004 -lr 0.01 -scheduler_step 1000 -bottleneck
+python3 ConceptBottleneck/experiments.py cub Concept_XtoC --seed 3 -ckpt 1 -log_dir model_templates/ConceptModel_Seed3/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -weighted_loss multiple -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -normalize_loss -b 64 -weight_decay 0.00004 -lr 0.01 -scheduler_step 1000 -bottleneck
+python3 ConceptBottleneck/CUB/generate_new_data.py ExtractConcepts --model_path model_templates/ConceptModel_Seed1/outputs/best_model_1.pth --data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 --out_dir outputs/ConceptModel1_PredConcepts
+python3 ConceptBottleneck/CUB/generate_new_data.py ExtractConcepts --model_path model_templates/ConceptModel_Seed2/outputs/best_model_2.pth --data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 --out_dir outputs/ConceptModel2_PredConcepts
+python3 ConceptBottleneck/CUB/generate_new_data.py ExtractConcepts --model_path model_templates/ConceptModel_Seed3/outputs/best_model_3.pth --data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 --out_dir outputs/ConceptModel3_PredConcepts
+
+### Independent Model
+python3 ConceptBottleneck/experiments.py cub Independent_CtoY --seed 1 -log_dir model_templates/IndependentModel_WithVal_Seed1/outputs/ -e 500 -optimizer sgd -use_attr -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -no_img -b 64 -weight_decay 0.00005 -lr 0.001 -scheduler_step 1000
+python3 ConceptBottleneck/experiments.py cub Independent_CtoY --seed 2 -log_dir model_templates/IndependentModel_WithVal_Seed2/outputs/ -e 500 -optimizer sgd -use_attr -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -no_img -b 64 -weight_decay 0.00005 -lr 0.001 -scheduler_step 1000
+python3 ConceptBottleneck/experiments.py cub Independent_CtoY --seed 3 -log_dir model_templates/IndependentModel_WithVal_Seed3/outputs/ -e 500 -optimizer sgd -use_attr -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -no_img -b 64 -weight_decay 0.00005 -lr 0.001 -scheduler_step 1000
+python ConceptBottleneck/CUB/inference.py -model_dirs model_templates/ConceptModel_Seed1/outputs/best_model_1.pth model_templates/ConceptModel_Seed2/outputs/best_model_2.pth model_templates/ConceptModel_Seed3/outputs/best_model_3.pth -model_dirs2 model_templates/IndependentModel_WithVal_Seed1/outputs/best_model_1.pth model_templates/IndependentModel_WithVal_Seed2/outputs/best_model_2.pth model_templates/IndependentModel_WithVal_Seed3/outputs/best_model_3.pth -eval_data test -use_attr -n_attributes 112 -data_dir data/CUB_processed/class_attr_data_10 -bottleneck -use_sigmoid -log_dir model_templates/IndependentModel_WithValSigmoid/outputs
+
+### Sequential Model
+python3 ConceptBottleneck/experiments.py cub Sequential_CtoY --seed 1 -log_dir model_templates/SequentialModel_WithVal_Seed1/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -data_dir model_templates/ConceptModel1_PredConcepts -n_attributes 112 -no_img -b 64 -weight_decay 0.00004 -lr 0.001 -scheduler_step 1000
+python3 ConceptBottleneck/experiments.py cub Sequential_CtoY --seed 2 -log_dir model_templates/SequentialModel_WithVal_Seed2/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -data_dir model_templates/ConceptModel2_PredConcepts -n_attributes 112 -no_img -b 64 -weight_decay 0.00004 -lr 0.001 -scheduler_step 1000
+python3 ConceptBottleneck/experiments.py cub Sequential_CtoY --seed 3 -log_dir model_templates/SequentialModel_WithVal_Seed3/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -data_dir model_templates/ConceptModel3_PredConcepts -n_attributes 112 -no_img -b 64 -weight_decay 0.00004 -lr 0.001 -scheduler_step 1000
+python3 ConceptBottleneck/CUB/inference.py -model_dirs model_templates/ConceptModel_Seed1/outputs/best_model_1.pth model_templates/ConceptModel_Seed2/outputs/best_model_2.pth model_templates/ConceptModel_Seed3/outputs/best_model_3.pth -model_dirs2 model_templates/SequentialModel_WithVal_Seed1/outputs/best_model_1.pth model_templates/SequentialModel_WithVal_Seed2/outputs/best_model_2.pth model_templates/SequentialModel_WithVal_Seed3/outputs/best_model_3.pth -eval_data test -use_attr -n_attributes 112 -data_dir CUB_processed/class_attr_data_10 -bottleneck -feature_group_results -log_dir model_templates/SequentialModel_WithVal/outputs
+
+### Standard (Joint) Model
+python3 ConceptBottleneck/experiments.py cub Joint --seed 1 -ckpt 1 -log_dir model_templates/Joint0Model_Seed1/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -weighted_loss multiple -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -attr_loss_weight 0 -normalize_loss -b 64 -weight_decay 0.00004 -lr 0.01 -scheduler_step 20 -end2end
+python3 ConceptBottleneck/experiments.py cub Joint --seed 2 -ckpt 1 -log_dir model_templates/Joint0Model_Seed2/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -weighted_loss multiple -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -attr_loss_weight 0 -normalize_loss -b 64 -weight_decay 0.00004 -lr 0.01 -scheduler_step 20 -end2end
+python3 ConceptBottleneck/experiments.py cub Joint --seed 3 -ckpt 1 -log_dir model_templates/Joint0Model_Seed3/outputs/ -e 1000 -optimizer sgd -pretrained -use_aux -use_attr -weighted_loss multiple -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -n_attributes 112 -attr_loss_weight 0 -normalize_loss -b 64 -weight_decay 0.00004 -lr 0.01 -scheduler_step 20 -end2end
+python3 ConceptBottleneck/CUB/inference.py -model_d
+irs model_templates/Joint0Model_Seed1/outputs/best_model_1.pth model_templates/Joint0Model_Seed2/outputs/best_model_2.pth model_templates/Joint0Model_Seed3/outputs/best_model_3.pth -eval_data test -use_attr -n_attributes 112 -data_dir data/CUB_200_2011/CUB_processed/class_attr_data_10 -log_dir model_templates/Joint0Model/outputs
